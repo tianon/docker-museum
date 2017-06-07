@@ -13,6 +13,7 @@ cd "$(dirname "$(readlink -f "$BASH_SOURCE")")"
 urlBase='https://download.docker.com/linux/static'
 declare -A linuxArchDirs=(
 	[x86_64]=''
+	[armhf]='linux/armhf'
 	[s390x]='linux/s390x'
 )
 
@@ -31,8 +32,14 @@ download() {
 	targetBin="docker-$version"
 	#target="$targetBin"
 	target="$targetBin.tgz"
-	url="$urlBase/$channel/$arch/$target"
-	( set -x; curl -fSL'#' "$url" -o "$target" ) || true
+	for url in \
+		"$urlBase/$channel/$arch/$targetBin-$arch.tgz" \
+		"$urlBase/$channel/$arch/$targetBin.tgz" \
+	; do
+		if ( set -x; curl -fSL'#' "$url" -o "$target" ); then
+			break
+		fi
+	done
 	if [ -s "$target" ]; then
 		case "$target" in
 			*.tgz)
