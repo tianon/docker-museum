@@ -10,15 +10,18 @@ fi
 
 cd "$(dirname "$(readlink -f "$BASH_SOURCE")")"
 
-urlBase='https://download.docker.com/linux/static'
-declare -A linuxArchDirs=(
-	[x86_64]=''
-	[armhf]='linux/armhf'
-	[s390x]='linux/s390x'
+urlBase='https://download.docker.com'
+declare -A archDirs=(
+	[linux/x86_64]=''
+	[linux/armhf]='linux/armhf'
+	[linux/s390x]='linux/s390x'
+	[win/x86_64]='windows/amd64'
+	[mac/x86_64]='darwin/amd64'
 )
 
 download() {
 	local version="$1"; shift
+	local platform="$1"; shift
 	local arch="$1"; shift
 
 	local channel='edge'
@@ -30,42 +33,56 @@ download() {
 
 	pwd
 	targetBin="docker-$version"
-	#target="$targetBin"
-	target="$targetBin.tgz"
+	case "$platform" in
+		win) targetExt='zip' ;;
+		*)   targetExt='tgz' ;;
+	esac
+	target="$targetBin.$targetExt"
 	for url in \
-		"$urlBase/$channel/$arch/$targetBin-$arch.tgz" \
-		"$urlBase/$channel/$arch/$targetBin.tgz" \
+		"$urlBase/$platform/static/$channel/$arch/$targetBin-$arch.$targetExt" \
+		"$urlBase/$platform/static/$channel/$arch/$targetBin.$targetExt" \
 	; do
 		if ( set -x; curl -fSL'#' "$url" -o "$target" ); then
 			break
 		fi
 	done
 	if [ -s "$target" ]; then
-		case "$target" in
-			*.tgz)
+		case "$targetExt" in
+			tgz)
 				( set -x; tar -xOf "$target" docker/docker > "$targetBin" )
+				;;
+			zip)
+				# TODO unzip
+				;;
+			*)
+				echo >&2 "error: unknown target extension: $targetExt"
+				exit 1
 				;;
 		esac
 		if [ -f "$targetBin" ]; then
 			( set -x; chmod +x "$targetBin" )
 		fi
 	else
-		echo "awww, no Docker $version at $urlBase for $arch"
+		echo >&2
+		echo >&2 "awww, no Docker $version at $urlBase for $platform on $arch"
 		( set -x; rm -f "$target" )
+		echo >&2
 	fi
 }
 
 while [ "$#" -gt 0 ]; do
 	version="$1"; shift
 
-	for arch in "${!linuxArchDirs[@]}"; do
-		archDir="${linuxArchDirs[$arch]}"
+	for arch in "${!archDirs[@]}"; do
+		archDir="${archDirs[$arch]}"
+		platform="${arch%%/*}"
+		platformArch="${arch#$platform/}"
 		(
 			if [ -n "$archDir" ]; then
 				mkdir -p "$archDir"
 				cd "$archDir"
 			fi
-			download "$version" "$arch"
+			download "$version" "$platform" "$platformArch"
 		)
 	done
 
