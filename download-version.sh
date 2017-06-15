@@ -39,8 +39,8 @@ download() {
 	esac
 	target="$targetBin.$targetExt"
 	for url in \
-		"$urlBase/$platform/static/$channel/$arch/$targetBin-$arch.$targetExt" \
 		"$urlBase/$platform/static/$channel/$arch/$targetBin.$targetExt" \
+		"$urlBase/$platform/static/$channel/$arch/$targetBin-$arch.$targetExt" \
 	; do
 		if ( set -x; curl -fSL'#' "$url" -o "$target" ); then
 			break
