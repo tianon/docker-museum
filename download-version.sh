@@ -13,6 +13,7 @@ cd "$(dirname "$(readlink -f "$BASH_SOURCE")")"
 urlBase='https://download.docker.com'
 declare -A archDirs=(
 	[linux/x86_64]=''
+	[linux/aarch64]='linux/arm64'
 	[linux/armhf]='linux/armhf'
 	[linux/s390x]='linux/s390x'
 	[win/x86_64]='windows/amd64'
