@@ -5,8 +5,8 @@ cd "$(dirname "$(readlink -f "$BASH_SOURCE")")"
 
 cat <<'EOH'
 # To determine the proper value for this, download
-# https://get.docker.io/builds/Linux/x86_64/docker-VERSION, chmod +x, and then
-# run ./docker-VERSION -v, which will list the exact build hash needed.
+# https://download.docker.com/linux/static/CHANNEL/x86_64/docker-VERSION-ce.tgz
+# extract "docker", run "./docker -v", which will list the exact build hash needed.
 
 EOH
 
