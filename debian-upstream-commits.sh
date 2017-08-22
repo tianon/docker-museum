@@ -12,7 +12,7 @@ EOH
 
 for d in docker-*; do
 	[ -x "$d" ] || continue
-	v="$("./$d" -v | awk '{ sub(/,$/, ": ", $3); print $3 $5 }')"
+	v="$("./$d" -v | awk '{ sub(/-ce/, "", $3); sub(/,$/, ": ", $3); print $3 $5 }')"
 	if [[ "$v" == *-dirty ]]; then
 		# skip dirty releases :(
 		continue
