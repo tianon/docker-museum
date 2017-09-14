@@ -15,9 +15,10 @@ declare -A archDirs=(
 	[linux/x86_64]=''
 	[linux/aarch64]='linux/arm64'
 	[linux/armhf]='linux/armhf'
+	[linux/ppc64le]='linux/ppc64le'
 	[linux/s390x]='linux/s390x'
-	[win/x86_64]='windows/amd64'
 	[mac/x86_64]='darwin/amd64'
+	[win/x86_64]='windows/amd64'
 )
 
 download() {
