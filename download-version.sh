@@ -29,7 +29,7 @@ download() {
 	local arch="$1"; shift
 
 	local channel='edge'
-	if [[ "$version" == *rc* ]]; then
+	if [[ "$version" == *rc* ]] || [[ "$version" == *tp* ]]; then
 		channel='test'
 	elif minorVersion="${version#*.}" && minorVersion="${minorVersion%%.*}" && minorVersion="${minorVersion#0}" && [ "$(( minorVersion % 3 ))" = '0' ]; then
 		channel='stable'
