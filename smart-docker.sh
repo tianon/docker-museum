@@ -10,7 +10,7 @@ docker_version() {
 }
 
 version=
-for dockerApiVersion in 1.22 1.18 1.16 1.12; do
+for dockerApiVersion in 1.39 1.24 1.22 1.18 1.16 1.12; do
 	if ! thisVersion="$(DOCKER_API_VERSION="$dockerApiVersion" docker_version)"; then
 		continue
 	fi
