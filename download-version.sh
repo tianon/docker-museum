@@ -28,7 +28,7 @@ download() {
 	local platform="$1"; shift
 	local arch="$1"; shift
 
-	local channel='edge'
+	local channel='stable' # 'edge'
 	if [[ "$version" == *rc* ]] || [[ "$version" == *tp* ]] || [[ "$version" == *beta* ]]; then
 		channel='test'
 	elif minorVersion="${version#*.}" && minorVersion="${minorVersion%%.*}" && minorVersion="${minorVersion#0}" && [ "$(( minorVersion % 3 ))" = '0' ]; then
