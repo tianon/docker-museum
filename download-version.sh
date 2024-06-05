@@ -18,6 +18,7 @@ declare -A archDirs=(
 	[linux/armel]='linux/armv6'
 	[linux/armhf]='linux/armhf'
 	[linux/ppc64le]='linux/ppc64le'
+	[linux/riscv64]='linux/riscv64'
 	[linux/s390x]='linux/s390x'
 	[mac/x86_64]='darwin/amd64'
 	[win/x86_64]='windows/amd64'
